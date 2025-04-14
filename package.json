@@ -1,23 +1,23 @@
 {
-  "name": "achados_e_perdidos",
+  "name": "foundly",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "Sistema comunitário de achados e perdidos com cadastro, busca e edição de itens.",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon app.js",
-    "start": "node app.js"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "author": "Seu Nome",
+  "license": "MIT",
+  "type": "commonjs",
   "dependencies": {
-    "@prisma/client": "^6.6.0",
-    "express": "^5.1.0",
-    "multer": "^1.4.5-lts.2"
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^4.21.2",
+    "pg": "^8.14.1"
   },
   "devDependencies": {
-    "nodemon": "^3.1.9",
-    "prisma": "^6.6.0"
+    "nodemon": "^3.1.9"
   }
 }

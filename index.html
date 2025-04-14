@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Foundly</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 30px; }
+    label { display: block; margin-top: 10px; }
+    input, select { width: 300px; padding: 5px; margin-top: 4px; }
+    button { margin-top: 15px; padding: 8px 20px; }
+    .item { border: 1px solid #ccc; padding: 10px; margin: 10px 0; }
+    .item img { max-width: 150px; display: block; margin-top: 10px; }
+  </style>
+</head>
+<body>
+
+  <h1>Sistema de Achados e Perdidos</h1>
+
+  <h2>Cadastrar Item</h2>
+  <form id="formCadastro">
+    <label>Nome do item:
+      <input type="text" name="nome" required>
+    </label>
+
+    <label>Categoria:
+      <input type="text" name="categoria" required>
+    </label>
+
+    <label>Data (YYYY-MM-DD):
+      <input type="date" name="data" required>
+    </label>
+
+    <label>Localização:
+      <input type="text" name="localizacao" required>
+    </label>
+
+    <label>Contato:
+      <input type="text" name="contato" required>
+    </label>
+
+    <label>Foto (URL):
+      <input type="text" name="foto">
+    </label>
+
+    <label>Status:
+      <select name="status" required>
+        <option value="Perdido">Perdido</option>
+        <option value="Encontrado">Encontrado</option>
+      </select>
+    </label>
+
+    <button type="submit">Cadastrar</button>
+  </form>
+
+  <hr>
+
+  <h2>Buscar Itens</h2>
+  <label>Filtro por palavra-chave:
+    <input type="text" id="busca">
+  </label>
+  <button onclick="buscarItens()">Buscar</button>
+
+  <div id="listaItens"></div>
+
+  <script>
+    const apiUrl = 'http://localhost:3000/api/items';
+
+    document.getElementById('formCadastro').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData.entries());
+
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      const result = await response.json();
+      alert(result.message || 'Item cadastrado!');
+      e.target.reset();
+      buscarItens();
+    });
+
+    async function buscarItens() {
+      const busca = document.getElementById('busca').value;
+      const response = await fetch(`${apiUrl}?busca=${busca}`);
+      const itens = await response.json();
+
+      const lista = document.getElementById('listaItens');
+      lista.innerHTML = '';
+
+      if (itens.length === 0) {
+        lista.innerHTML = '<p>Nenhum item encontrado.</p>';
+        return;
+      }
+
+      itens.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'item';
+        div.innerHTML = `
+          <strong>${item.nome}</strong> (${item.status})<br>
+          Categoria: ${item.categoria}<br>
+          Localização: ${item.localizacao}<br>
+          Data: ${item.data}<br>
+          Contato: ${item.contato}<br>
+          ${item.foto ? `<img src="${item.foto}" alt="foto">` : ''}
+        `;
+        lista.appendChild(div);
+      });
+    }
+
+    // Carregar ao abrir a página
+    buscarItens();
+  </script>
+
+</body>
+</html>

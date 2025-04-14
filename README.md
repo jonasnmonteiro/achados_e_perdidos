@@ -4,9 +4,6 @@ Aplicação backend para cadastro de itens perdidos e encontrados em locais púb
 
 ## Tecnologias
 - Node.js + Express
-- PostgreSQL + Prisma
-- Multer (upload de imagens)
-- Insomnia (testes)
 
 ## Como rodar
 
@@ -16,5 +13,4 @@ cd achados-e-perdidos
 npm install
 cp .env.example .env
 # Edite o .env.exemplo com seus dados
-npx prisma migrate dev
 npm run dev
